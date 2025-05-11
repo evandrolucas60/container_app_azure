@@ -78,6 +78,44 @@ COPY . /usr/share/nginx/html
 ```
 
 ---
+## 📄 Comandos no powershell
+
+```dockerfile
+docker build -t blog-paralax-app:latest .
+docker run -d -p 80:80 blog-paralax-app:latest
+
+az login
+
+# Create a resource group
+az group create --name blog-paralax-app --location eastus
+
+# Create an App Service plan
+az provider register --namespace Microsoft.ContainerRegistry
+
+# Create Container Registry
+az acr create --resource-group blog-paralax-app --name blogparalaxacr --sku Basic
+
+# Log in to the registry
+az acr login --name blogparalaxacr
+
+# tag the image
+docker tag blog-paralax-app:latest blogparalaxacr.azurecr.io/blog-paralax-app:latest
+
+# Push the image to the registry
+docker push blogparalaxacr.azurecr.io/blog-paralax-app:latest
+
+#registry provider
+az provider register -n Microsoft.OperationalInsights --wait
+
+#Create Environment container app
+az containerapp env create --name blog-paralax-app-env --resource-group blog-paralax-app --location eastus
+
+# Create the container app
+az containerapp create --name [nome] --resource-group [group] --environment [.env] --image [image].azurecr.io/[container]:latest
+--target-port 80 --ingress 'external' --registry-username [username] --registry-password [pwd] --registry-server [image].azurecr.io
+```
+
+---
 
 ## 🙌 Contribuindo
 
